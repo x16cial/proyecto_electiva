@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Subir archivos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="contenedor">
+    <h1>Subir y descargar archivos PHP</h1>
+
+    <form id="form" method="POST" action="http://localhost:3000/subidos/cargar.php" enctype="multipart/form-data">
+        <input type="file" name="file" accept="application/pdf">
+        <input type="submit" value="Subir">
+    </form>
+
+    <?php
+    if (isset($_GET['mensaje'])) {
+        echo "{$_GET['mensaje']}";
+    }
+    ?>
+
+    <table>
+        <tr>
+            <th>Número</th>
+            <th>Nombre del documento</th>
+            <th>Descargar</th>
+            <th>Eliminar</th>
+        </tr>
+
+        <?php
+        $archivos = scandir("subidos");
+        $num = 0;
+        for ($i = 2; $i < count($archivos); $i++) {
+            $num++;
+        ?>
+        <tr>
+            <td><?php echo $num; ?></td>
+            <td><?php echo $archivos[$i]; ?></td>
+            <td><a title="Descargar archivo" href="subidos/<?php echo $archivos[$i]; ?>" download="<?php echo $archivos[$i]; ?>">Descargar</a></td>
+            <td><a title="Eliminar archivo" href="eliminar.php?name=subidos/<?php echo $archivos[$i]; ?>" onclick="return confirm('¿Está seguro de eliminar el archivo?');">Eliminar</a></td>
+        </tr>
+        <?php } ?>
+    </table>
+
+</div>
+</body>
+</html>
